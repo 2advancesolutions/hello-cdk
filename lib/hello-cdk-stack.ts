@@ -7,11 +7,11 @@ export class HelloCdkStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    const myLambda = new Function(this, 'MyLambda', {
+    const handler = new Function(this, 'Hello-Lambda', {
       runtime: Runtime.NODEJS_16_X,
       memorySize: 512,
-      code: Code.fromAsset(join(__dirname, '../lambdas')),
-      handler: 'app.handler'
+      handler: 'app.handler',
+      code: Code.fromAsset(join(__dirname, '../lambdas'))
     });
   }
 }
