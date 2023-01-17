@@ -13,7 +13,7 @@ export class HelloCdkStack extends cdk.Stack {
     const handler = new Function(this, 'Hello-Lambda', {
       runtime: Runtime.NODEJS_16_X,
       memorySize: 512,
-      handler: 'listBuckets.handler',
+      handler: 'listLambdas.handler',
       code: Code.fromAsset(join(__dirname, '../lambdas'))
     });
     // policies
@@ -22,9 +22,15 @@ export class HelloCdkStack extends cdk.Stack {
       actions: ['s3:*'],
       resources: ['*']
     });
+
+    const listLambdasPolicy = new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      actions: ['lambda:*'],
+      resources: ['*']
+    });
     // attach policies
     handler.role?.attachInlinePolicy(new iam.Policy(this, 'list-resources', {
-      statements: [listBucketPolicy]
+      statements: [listBucketPolicy, listLambdasPolicy]
     }))
   }
 }
